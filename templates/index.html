@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prescription Generator</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        #user_message {
+            resize: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Prescription Generator</h1>
+        <form method="POST">
+            <div class="form-group">
+                <label for="user_message">Enter patient information and symptoms:</label><br>
+                <textarea name="user_message" id="user_message" rows="4" cols="50" required></textarea><br>
+                <input type="submit" value="Generate Prescription" class="btn btn-primary">
+            </div>
+        </form>
+
+        {% if user_message %}
+        <h2>Patient's Message:</h2>
+        <p>{{ user_message }}</p>
+        <h2>AI Generated Prescription</h2>
+        {% for line in assistant_reply %}
+        <p>{{ line }}</p>
+        {% endfor %}
+        {% endif %}
+    </div>
+</body>
+</html>

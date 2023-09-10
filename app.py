@@ -1,12 +1,5 @@
 from flask import Flask, request, render_template, jsonify
-from markupsafe import Markup
 import openai
-
-# Replace 'YOUR_API_KEY' with your actual OpenAI API key
-api_key = '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'
-
-# Initialize the OpenAI API client
-openai.api_key = api_key
 
 # Create a Flask app
 app = Flask(__name__)
@@ -17,6 +10,16 @@ def home():
     if request.method == 'POST':
         # Get the user's message from the form
         user_message = request.form.get('user_message')
+        
+        # Get the API key from the query parameter in the URL
+        api_key = request.args.get('api_key')
+
+        # Check if an API key is provided in the URL
+        if not api_key:
+            return "API key is missing in the URL. Please provide the 'api_key' parameter."
+
+        # Initialize the OpenAI API client with the provided API key
+        openai.api_key = api_key
 
         # Create a list of messages to simulate a conversation
         messages = [
@@ -41,8 +44,6 @@ def home():
 
         # Extract the assistant's reply
         assistant_reply = response.choices[0].message["content"]
-        # Use Markup to safely render HTML content
-        # assistant_reply = Markup(assistant_reply)
         assistant_reply = assistant_reply.split('\n')
 
         return render_template('index.html', user_message=user_message, assistant_reply=assistant_reply)
